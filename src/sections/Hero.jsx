@@ -213,7 +213,7 @@ export const Hero = () => {
                 />
                 <div className="relative glass rounded-3xl profile-card-glow transition-all duration-500 overflow-hidden">
                   <img
-                    src="/profile-photo.jpg"
+                    src="/portfolio/profile-photo.jpg"
                     alt="Gangabathina Chanakya"
                     className="w-full aspect-[4/5] object-cover"
                   />
