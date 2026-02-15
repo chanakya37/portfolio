@@ -5,8 +5,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # Build outputs
-dist/
 build/
+!dist/
 
 # Environment variables
 .env
@@ -29,7 +29,5 @@ Thumbs.db
 .parcel-cache/
 
 # Vercel
-.vercel
-
 .vercel
 .env*.local
