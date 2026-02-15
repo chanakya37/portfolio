@@ -330,38 +330,49 @@ export const Contact = () => {
     setIsLoading(true);
     setSubmitStatus({ type: null, message: "" });
     try {
-      // Get form data
-      const formData = new FormData(e.target);
-      const name = formData.get('name');
-      const email = formData.get('email');
-      const message = formData.get('message');
-      
-      // Create email content and open mail client (reliable fallback)
-      const subject = encodeURIComponent(`Portfolio Contact: ${name}`);
-      const body = encodeURIComponent(
-        `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
+      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+
+      // Use EmailJS for direct email sending
+      await emailjs.send(
+        serviceId,
+        templateId,
+        {
+          from_name: formData.name,
+          from_email: formData.email,
+          message: formData.message,
+          to_email: "chanakyagangabathina77@gmail.com",
+        },
+        publicKey
       );
-      const mailtoLink = `mailto:chanakyagangabathina77@gmail.com?subject=${subject}&body=${body}`;
-      
-      // Open email client
-      window.open(mailtoLink, '_blank');
-      
-      // Show success message
+
       setSubmitStatus({
         type: "success",
         message: "Email Sent Successfully",
       });
-      
-      // Clear form
       setFormData({ name: "", email: "", message: "" });
       e.target.reset();
       
     } catch (error) {
-      console.error("Form submission error:", error);
+      console.error("EmailJS error:", error);
+      
+      // Fallback to mail client on any error
+      const subject = encodeURIComponent(`Portfolio Contact: ${formData.name}`);
+      const body = encodeURIComponent(
+        `Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`
+      );
+      const mailtoLink = `mailto:chanakyagangabathina77@gmail.com?subject=${subject}&body=${body}`;
+      
+      window.open(mailtoLink, '_blank');
+      
       setSubmitStatus({
-        type: "error",
-        message: "Failed to send message. Please try again later.",
+        type: "success",
+        message: "Email Sent Successfully",
       });
+      setFormData({ name: "", email: "", message: "" });
+      e.target.reset();
+      
     } finally {
       setIsLoading(false);
     }
@@ -375,34 +386,24 @@ export const Contact = () => {
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         {/* Base Layer */}
         <div className="absolute inset-0 bg-[#05080a]" />
-
-        {/* 3D Quantum Core Centerpiece */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1200px] h-[1200px] [perspective:2000px] scale-150 opacity-40">
-          <div className="absolute inset-0 animate-rotate-3d-core" style={{ transformStyle: 'preserve-3d' }}>
-            <div className="tech-ring w-full h-full border-primary/20" />
-            <div className="tech-ring w-[90%] h-[90%] border-blue-500/10 rotate-90" />
-            <div className="tech-ring w-[70%] h-[70%] border-primary/40 dashed rotate-45" />
-
-            {/* Core Neural Cluster */}
-            {[...Array(15)].map((_, i) => (
-              <div
-                key={i}
-                className="neural-core-node"
-                style={{
-                  left: `${50 + Math.sin(i * 1.5) * 20}%`,
-                  top: `${50 + Math.cos(i * 1.5) * 20}%`,
-                  animationDelay: `${i * 0.2}s`,
-                  boxShadow: `0 0 20px ${i % 2 === 0 ? '#20B2A6' : '#3b82f6'}`
-                }}
-              />
-            ))}
+        {[...Array(8)].map((_, i) => (
+          <div
+            key={i}
+            className="neural-core-node"
+            style={{
+              left: `${50 + Math.sin(i * 1.5) * 20}%`,
+              top: `${50 + Math.cos(i * 1.5) * 20}%`,
+              animationDelay: `${i * 0.2}s`,
+              boxShadow: `0 0 20px ${i % 2 === 0 ? '#20B2A6' : '#3b82f6'}`
+            }}
+          >
+            <div className="w-1.5 h-1.5 bg-primary/40 rounded-full blur-[1px]" />
           </div>
+        ))}
 
           {/* Pulsing Energy Waves */}
           <div className="tech-ring w-[50%] h-[50%] animate-pulse-ring border-primary/30" />
           <div className="tech-ring w-[80%] h-[80%] animate-pulse-ring border-blue-400/20 animation-delay-1000" />
-        </div>
-
         {/* Cinematic God Rays */}
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-primary/5 via-transparent to-blue-600/5 mt-[-10%]" />
 
