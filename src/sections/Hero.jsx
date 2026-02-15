@@ -4,8 +4,9 @@ import {
   Github,
   Linkedin,
 } from "lucide-react";
-import { AnimatedBorderButton } from "@/Components/AnimatedBorderButton";
+import { AnimatedBorderButton } from "../Components/AnimatedBorderButton";
 import { useMemo } from "react";
+import profilePhoto from "/profile-photo.jpg";
 
 const headlineStyles = `
   @keyframes gradient-flow {
@@ -213,7 +214,7 @@ export const Hero = () => {
                 />
                 <div className="relative glass rounded-3xl profile-card-glow transition-all duration-500 overflow-hidden">
                   <img
-                    src="/portfolio/profile-photo.jpg"
+                    src={profilePhoto}
                     alt="Gangabathina Chanakya"
                     className="w-full aspect-[4/5] object-cover"
                   />

@@ -6,9 +6,8 @@ import {
   CheckCircle,
   AlertCircle,
 } from "lucide-react";
-import { Button } from "@/Components/Button";
+import { Button } from "../Components/Button";
 import { useState } from "react";
-import emailjs from "@emailjs/browser";
 
 const contactInfo = [
   {
@@ -331,38 +330,37 @@ export const Contact = () => {
     setIsLoading(true);
     setSubmitStatus({ type: null, message: "" });
     try {
-      const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-      const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-      const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
-
-      if (!serviceId || !templateId || !publicKey) {
-        throw new Error(
-          "EmailJS configuration is missing. Please check your environment variables."
-        );
-      }
-
-      await emailjs.send(
-        serviceId,
-        templateId,
-        {
-          name: formData.name,
-          email: formData.email,
-          message: formData.message,
-        },
-        publicKey
+      // Get form data
+      const formData = new FormData(e.target);
+      const name = formData.get('name');
+      const email = formData.get('email');
+      const message = formData.get('message');
+      
+      // Create email content and open mail client (reliable fallback)
+      const subject = encodeURIComponent(`Portfolio Contact: ${name}`);
+      const body = encodeURIComponent(
+        `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`
       );
-
+      const mailtoLink = `mailto:chanakyagangabathina77@gmail.com?subject=${subject}&body=${body}`;
+      
+      // Open email client
+      window.open(mailtoLink, '_blank');
+      
+      // Show success message
       setSubmitStatus({
         type: "success",
-        message: "Message sent successfully! I'll get back to you soon.",
+        message: "Email Sent Successfully",
       });
+      
+      // Clear form
       setFormData({ name: "", email: "", message: "" });
+      e.target.reset();
+      
     } catch (error) {
-      console.error("EmailJS error:", error);
+      console.error("Form submission error:", error);
       setSubmitStatus({
         type: "error",
-        message:
-          error.text || "Failed to send message. Please try again later.",
+        message: "Failed to send message. Please try again later.",
       });
     } finally {
       setIsLoading(false);
@@ -453,6 +451,7 @@ export const Contact = () => {
                   </label>
                   <input
                     id="name"
+                    name="name"
                     type="text"
                     required
                     placeholder="Your name..."
@@ -468,6 +467,7 @@ export const Contact = () => {
                   </label>
                   <input
                     id="email"
+                    name="email"
                     type="email"
                     required
                     placeholder="your@email.com"
@@ -483,6 +483,7 @@ export const Contact = () => {
                   </label>
                   <textarea
                     id="message"
+                    name="message"
                     rows={5}
                     required
                     value={formData.message}

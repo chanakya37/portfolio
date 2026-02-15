@@ -1,5 +1,5 @@
 import { ArrowUpRight, Github } from "lucide-react";
-import { AnimatedBorderButton } from "@/Components/AnimatedBorderButton";
+import { AnimatedBorderButton } from "../Components/AnimatedBorderButton";
 const projects = [
   {
     title: "AI-Integrated Learning Management Platform",
