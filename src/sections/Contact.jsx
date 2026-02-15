@@ -354,7 +354,7 @@ export const Contact = () => {
 
       setSubmitStatus({
         type: "success",
-        message: "Message sent successfully! I'll get back to you soon.",
+        message: "Email Sent Successfully",
       });
       setFormData({ name: "", email: "", message: "" });
     } catch (error) {
